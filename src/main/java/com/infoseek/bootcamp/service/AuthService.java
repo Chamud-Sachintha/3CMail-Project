@@ -9,23 +9,46 @@ import com.infoseek.bootcamp.dto.UserDTO;
 import com.infoseek.bootcamp.util.Util;
 
 public class AuthService {
-private static Connection connection = Util.getConnection();
+	private static Connection connection = Util.getConnection();
 	
+	public static boolean checkUser(String username,String password) {
+		try {
+			String checkUser = "SELECT * FROM users WHERE username = ? AND pswd = ?";
+			PreparedStatement preSmt = connection.prepareStatement(checkUser);
+			preSmt.setString(1, username);
+			preSmt.setString(2, password);
+			
+			ResultSet rs = preSmt.executeQuery();
+			if(rs.next()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}catch (Exception e) {
+			return false;
+		}
+	}
 	
 	public static int saveUserDetails(UserDTO newUser){
 		int rowCount = 0;
-		try {
-			String insert = "INSERT INTO users (username,address,contact_number,pswd) VALUES (?,?,?,?)";
-			PreparedStatement preStmt = connection.prepareStatement(insert);
-			preStmt.setString(1, newUser.getUsername());
-			preStmt.setString(2, newUser.getAddress());
-			preStmt.setString(3, newUser.getContactNumber());
-			preStmt.setString(4, newUser.getPassword());
-			
-			System.out.println(preStmt);
-			rowCount = preStmt.executeUpdate();
-		}catch(SQLException e) {
-			System.out.println(e.getMessage());
+		if(checkUser(newUser.getUsername(),newUser.getPassword()) != true) {
+			try {
+				
+				String insert = "INSERT INTO users (username,address,contact_number,pswd) VALUES (?,?,?,?)";
+				PreparedStatement preStmt = connection.prepareStatement(insert);
+				preStmt.setString(1, newUser.getUsername());
+				preStmt.setString(2, newUser.getAddress());
+				preStmt.setString(3, newUser.getContactNumber());
+				preStmt.setString(4, newUser.getPassword());
+				
+				System.out.println(preStmt);
+				rowCount = preStmt.executeUpdate();
+			}catch(SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}else {
+			rowCount = 2;
 		}
 		
 		return rowCount;

@@ -73,8 +73,8 @@
 			<img src="register/images/image-1.png" alt="" class="image-1">
 			<form action="RegisterUser" style="margin-top: 10%;" method="post">
 				<%
-					if(request.getAttribute("status") != null){
-						out.print("<h4>" + request.getAttribute("status") + "</h4>");
+					if(request.getParameter("status") != null){
+						out.print("<h4>" + request.getParameter("status") + "</h4>");
 					}
 				%>
 				<h3>New Account?</h3>

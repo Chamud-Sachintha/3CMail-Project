@@ -24,11 +24,12 @@ public class RegisterUser extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
+	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserDTO newUser = new UserDTO();
 		
-		String username = request.getParameter("username");
+		String username = request.getParameter("username").replaceAll("\\s", "");
 		String address = request.getParameter("address");
 		String contactNumber = request.getParameter("contactNumber");
 		String password = request.getParameter("password");
@@ -42,17 +43,25 @@ public class RegisterUser extends HttpServlet {
 			
 			if(AuthService.saveUserDetails(newUser) == 1) {
 				request.setAttribute("status", "Registration Successfully.");
-				RequestDispatcher rd = request.getRequestDispatcher("/register.jsp");
-				rd.include(request, response);
+				String redirectURL1 = "register.jsp?status="+request.getAttribute("status");
+				
+				response.sendRedirect(redirectURL1);
+			}else if(AuthService.saveUserDetails(newUser) == 2) {
+				request.setAttribute("status", "Username Already Exist.");
+				String redirectURL1 = "register.jsp?status="+request.getAttribute("status");
+				
+				response.sendRedirect(redirectURL1);
 			}else {
-				request.setAttribute("status", "Registration is Not Successfully.");
-				RequestDispatcher rd = request.getRequestDispatcher("/register.jsp");
-				rd.include(request, response);
+				request.setAttribute("status", "Registration Not Successfully.");
+				String redirectURL1 = "register.jsp?status="+request.getAttribute("status");
+				
+				response.sendRedirect(redirectURL1);
 			}
 		}else {
-			request.setAttribute("status", "Enterd Password Doesn't Match.");
-			RequestDispatcher rd = request.getRequestDispatcher("/register.jsp");
-			rd.include(request, response);
+			request.setAttribute("status", "Password Doesn't Match.");
+			String redirectURL1 = "register.jsp?status="+request.getAttribute("status");
+			
+			response.sendRedirect(redirectURL1);
 		}
 	}
 
