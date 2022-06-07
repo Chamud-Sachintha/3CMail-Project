@@ -34,8 +34,13 @@ public class SendEmail extends HttpServlet {
 			newEmail.setEmailSubject(emailSubject);
 			newEmail.setEmailMessage(emailMessage);
 			
-			if(EmailService.sendEmail(newEmail) == true) {
+			if(EmailService.sendEmail(newEmail) == 1) {
 				request.setAttribute("status", "Email Sent Successfully.");
+				String redirectURL1 = "dashboard.jsp?status="+request.getAttribute("status");
+				
+				response.sendRedirect(redirectURL1);
+			}else if(EmailService.sendEmail(newEmail) == 2) {
+				request.setAttribute("status", "Email is Not Sent Because Destination Email is Not Exist.");
 				String redirectURL1 = "dashboard.jsp?status="+request.getAttribute("status");
 				
 				response.sendRedirect(redirectURL1);
