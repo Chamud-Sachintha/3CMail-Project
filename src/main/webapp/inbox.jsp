@@ -1,3 +1,8 @@
+<%@page import="com.infoseek.bootcamp.service.EmailService"%>
+<%@page import="com.infoseek.bootcamp.dto.EmailDTO" %>
+<%@page import="java.util.List" %>
+<%@page import="java.util.ArrayList" %>
+
 <%
 	if(session.getAttribute("user") == null){
 		request.setAttribute("status", "Please Login Before Access the Dashboard.");
@@ -16,7 +21,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -25,14 +30,6 @@
 	
 	<link rel="stylesheet" href="compose/css/ionicons.min.css">
 	<link rel="stylesheet" href="compose/css/style.css">
-	<style>
-		body{
-		  animation: true,
-		  autohide: true,
-		  delay: 500
-		}
-		
-	</style>
 </head>
 <body>
 	<div class="wrapper d-flex align-items-stretch">
@@ -52,10 +49,39 @@
 				}
 			%>
 		
-			<h2 class="mb-4">Home</h2>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		</div>
+			<h2 class="mb-4">Inbox</h2>
+			<div style="padding: 1rem 0;">
+    			<table class="table ">
+    				<tr>
+    					<th>#</th>
+    					<th>From</th>
+    					<th>Subject</th>
+    					<th>Message</th>
+    					<th>Actions</th>
+    				</tr>
+    				<%
+    					List<EmailDTO> currentEmails = EmailService.getListOfEmails(session.getAttribute("user").toString());
+    					
+    					for(int eachEmail = 0; eachEmail < currentEmails.size(); eachEmail++){
+    						try{
+    							out.print("<tr>"
+    									+ "<td>" + eachEmail + "</td>"
+										+ "<td>" + currentEmails.get(eachEmail).getEmailTo() + "</td>"
+										+ "<td>" + currentEmails.get(eachEmail).getEmailSubject() + "</td>"
+										+ "<td>" + currentEmails.get(eachEmail).getEmailMessage() + "</td>"
+									);
+    							
+    							out.println("<td><button class=btn><i class='fa fa-trash'></i></button>" + 
+    											"<button class=btn><i class='fa fa-eye'></i></button></td>");
+    							
+    						}catch(Exception e){
+    							out.print("alert(" + e.getMessage() + ");");
+    						}
+    					}
+    				%>
+    			</table>
+    		</div>
+    	</div>
 	</div>
 	
 	<!-- JavaScript Bundle with Popper -->

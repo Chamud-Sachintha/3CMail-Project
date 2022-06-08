@@ -4,7 +4,14 @@ public class EmailDTO {
 	private String emailTo;
 	private String emailSubject;
 	private String emailMessage;
+	private String emailFrom;
 	
+	public String getEmailFrom() {
+		return emailFrom;
+	}
+	public void setEmailFrom(String emailFrom) {
+		this.emailFrom = emailFrom;
+	}
 	public String getEmailTo() {
 		return emailTo;
 	}

@@ -7,16 +7,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import com.infoseek.bootcamp.dto.EmailDTO;
 import com.infoseek.bootcamp.service.EmailService;
 
-@WebServlet("/SendEmail")
-public class SendEmail extends HttpServlet {
+@WebServlet("/SaveToDraft")
+public class SaveToDraft extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public SendEmail() {
+       
+    public SaveToDraft() {
         super();
     }
 
@@ -25,41 +24,30 @@ public class SendEmail extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
 		EmailDTO newEmail = new EmailDTO();
+		HttpSession session = request.getSession();
 		
 		String emailTo = request.getParameter("emailTo");
 		String emailSubject = request.getParameter("emailSubject");
 		String emailMessage = request.getParameter("emailMessage");
 		String emailFrom = session.getAttribute("user").toString();
 		
-		try {
-			newEmail.setEmailTo(emailTo);
-			newEmail.setEmailSubject(emailSubject);
-			newEmail.setEmailMessage(emailMessage);
-			newEmail.setEmailFrom(emailFrom);
+		newEmail.setEmailTo(emailTo);
+		newEmail.setEmailFrom(emailFrom);
+		newEmail.setEmailSubject(emailSubject);
+		newEmail.setEmailMessage(emailMessage);
+		
+		if(EmailService.saveEmailToDraft(newEmail) == 1) {
+			request.setAttribute("status", "Email Save to Drafts.");
+			String redirectURL1 = "dashboard.jsp?status="+request.getAttribute("status");
 			
-			if(EmailService.sendEmail(newEmail) == 1) {
-				request.setAttribute("status", "Email Sent Successfully.");
-				String redirectURL1 = "dashboard.jsp?status="+request.getAttribute("status");
-				
-				response.sendRedirect(redirectURL1);
-			}else if(EmailService.sendEmail(newEmail) == 2) {
-				request.setAttribute("status", "Email is Not Sent Because Destination Email is Not Exist.");
-				String redirectURL1 = "dashboard.jsp?status="+request.getAttribute("status");
-				
-				response.sendRedirect(redirectURL1);
-			}else {
-				request.setAttribute("status", "Email is Not Sent.");
-				String redirectURL1 = "dashboard.jsp?status="+request.getAttribute("status");
-				
-				response.sendRedirect(redirectURL1);
-			}
-		}catch(Exception e) {
-			request.setAttribute("status", "Email is Not Sent.");
+			response.sendRedirect(redirectURL1);
+		}else {
+			request.setAttribute("status", "Email Not Save to Drafts.");
 			String redirectURL1 = "dashboard.jsp?status="+request.getAttribute("status");
 			
 			response.sendRedirect(redirectURL1);
 		}
 	}
+
 }

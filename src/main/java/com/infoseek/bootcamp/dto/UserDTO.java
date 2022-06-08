@@ -11,7 +11,7 @@ public class UserDTO {
 		return username;
 	}
 	public void setUsername(String username) {
-		this.username = username + "@3cmail.com";
+		this.username = username;
 	}
 	public String getAddress() {
 		return address;

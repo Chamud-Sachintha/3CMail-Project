@@ -7,6 +7,60 @@
 <title>Insert title here</title>
 </head>
 <body>
+<!-- model starts here -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="ion-ios-close"></span>
+        </button>
+      </div>
+      <div class="modal-body p-4 py-5 p-md-5">
+      	<h3 class="text-center mb-3">Compose New Email.</h3>
+      	
+      	<form action="SendEmail" class="signup-form" method="post">
+      		<div class="form-group mb-2">
+      			<label for="name">To.</label>
+      			<input type="text" class="form-control" placeholder="John Doe" name="emailTo" required>
+      		</div>
+      		<div class="form-group mb-2">
+      			<label for="emailSubject">Subject.</label>
+      			<input type="text" class="form-control" placeholder="johndoe@gmail.com" name="emailSubject" required>
+      		</div>
+           <div class="form-group mb-2">
+           	<label for="emailMessage">Message.</label>
+             	<textarea rows="5" cols="10" class="form-control" name="emailMessage" required></textarea>
+           </div>
+           <div class="form-group mb-2">
+           	<button type="submit" class="form-control btn btn-primary rounded submit px-3">Send Email</button>
+           </div>
+           
+           <button type="submit" name="action" class="form-control btn btn-warning rounded submit px-3" value="saveToDraft" onclick="form.action='SaveToDraft';">Save to Drafts</button>
+         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- model ends here -->
+
+<!-- status model starts here -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="ion-ios-close"></span>
+        </button>
+      </div>
+      <div class="modal-body p-4 py-5 p-md-5">
+      	<h3 class="text-center mb-3">Compose New Email.</h3>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- status model ends here -->
 <nav id="sidebar">
 	<div class="custom-menu">
 		<button type="button" id="sidebarCollapse" class="btn btn-primary">
@@ -21,10 +75,10 @@
             <a href="#" data-toggle="modal" data-target="#exampleModalCenter"><span class="fa fa-plus mr-3"></span> Compose</a>
           </li>
           <li class="">
-            <a href="#"><span class="fa fa-home mr-3"></span> Home</a>
+            <a href="dashboard.jsp"><span class="fa fa-home mr-3"></span> Home</a>
           </li>
           <li>
-              <a href="#"><span class="fa fa-user mr-3"></span> Inbox</a>
+              <a href="inbox.jsp"><span class="fa fa-user mr-3"></span> Inbox</a>
           </li>
           <li>
              <a href="#"><span class="fa fa-briefcase mr-3"></span> Drafts</a>

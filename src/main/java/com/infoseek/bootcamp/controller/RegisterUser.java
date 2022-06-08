@@ -29,7 +29,7 @@ public class RegisterUser extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UserDTO newUser = new UserDTO();
 		
-		String username = request.getParameter("username").replaceAll("\\s", "");
+		String username = request.getParameter("username").replaceAll("\\s", "") + "@3cmail.com";
 		String address = request.getParameter("address");
 		String contactNumber = request.getParameter("contactNumber");
 		String password = request.getParameter("password");

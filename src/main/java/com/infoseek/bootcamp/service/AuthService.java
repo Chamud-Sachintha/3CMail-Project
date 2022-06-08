@@ -13,10 +13,9 @@ public class AuthService {
 	
 	public static boolean checkUser(String username,String password) {
 		try {
-			String checkUser = "SELECT * FROM users WHERE username = ? AND pswd = ?";
+			String checkUser = "SELECT * FROM users WHERE username = ?";
 			PreparedStatement preSmt = connection.prepareStatement(checkUser);
 			preSmt.setString(1, username);
-			preSmt.setString(2, password);
 			
 			ResultSet rs = preSmt.executeQuery();
 			if(rs.next()) {
