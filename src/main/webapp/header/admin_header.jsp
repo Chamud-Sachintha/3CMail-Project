@@ -81,13 +81,13 @@
               <a href="inbox.jsp"><span class="fa fa-user mr-3"></span> Inbox</a>
           </li>
           <li>
-             <a href="#"><span class="fa fa-briefcase mr-3"></span> Drafts</a>
+             <a href="drafts.jsp"><span class="fa fa-briefcase mr-3"></span> Drafts</a>
           </li>
           <li>
-             <a href="#"><span class="fa fa-sticky-note mr-3"></span> Sent Mails</a>
+             <a href="sentmails.jsp"><span class="fa fa-sticky-note mr-3"></span> Sent Mails</a>
           </li>
           <li>
-             <a href="#"><span class="fa fa-suitcase mr-3"></span> Trash</a>
+             <a href="trash.jsp"><span class="fa fa-suitcase mr-3"></span> Trash</a>
           </li>
           <li>
              <a href="#"><span class="fa fa-cogs mr-3"></span> Services</a>

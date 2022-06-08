@@ -2,7 +2,6 @@
 <%@page import="com.infoseek.bootcamp.dto.EmailDTO" %>
 <%@page import="java.util.List" %>
 <%@page import="java.util.ArrayList" %>
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 <%
 	if(session.getAttribute("user") == null){
@@ -50,35 +49,36 @@
 				}
 			%>
 		
-			<h2 class="mb-4">Inbox</h2>
+			<h2 class="mb-4">Sent Mails</h2>
 			<div style="padding: 1rem 0;">
     			<table class="table ">
     				<tr>
     					<th>#</th>
-    					<th>From</th>
+    					<th>To</th>
     					<th>Subject</th>
     					<th>Message</th>
     					<th>Actions</th>
     				</tr>
-    				
-				    <%
-					    List<EmailDTO> currentEmails = EmailService.getListOfEmails(session.getAttribute("user").toString()); 
-					    for(int i=0; i<currentEmails.size(); i++){
-					%>
-				        <tr>
-				        	<td><%= i %></td>
-				            <td><%= currentEmails.get(i).getEmailTo() %></td>
-				            <td><%= currentEmails.get(i).getEmailSubject() %></td>
-				            <td><%= currentEmails.get(i).getEmailMessage() %></td>
-				            <td>
-				            	<button class=btn><i class='fa fa-trash'></i></button>
-				            	<button class=btn><i class='fa fa-eye'></i></button>
-				            </td>
-				        </tr>
-				    <%
-				    	}
-				    %>
-    				
+    				<%
+    					List<EmailDTO> sentEmails = EmailService.getListOfSentEmails(session.getAttribute("user").toString());
+    					
+    					for(int eachEmail = 0; eachEmail < sentEmails.size(); eachEmail++){
+    						try{
+    							out.print("<tr>"
+    									+ "<td>" + eachEmail + "</td>"
+										+ "<td>" + sentEmails.get(eachEmail).getEmailTo() + "</td>"
+										+ "<td>" + sentEmails.get(eachEmail).getEmailSubject() + "</td>"
+										+ "<td>" + sentEmails.get(eachEmail).getEmailMessage() + "</td>"
+									);
+    							
+    							out.println("<td><button class=btn><i class='fa fa-trash'></i></button>" + 
+    											"<button class=btn><i class='fa fa-eye'></i></button></td></tr>");
+    							
+    						}catch(Exception e){
+    							out.print("alert(" + e.getMessage() + ");");
+    						}
+    					}
+    				%>
     			</table>
     		</div>
     	</div>

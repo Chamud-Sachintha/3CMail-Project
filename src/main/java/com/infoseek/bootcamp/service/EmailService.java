@@ -59,7 +59,6 @@ public class EmailService {
 	
 	public static List<EmailDTO> getListOfEmails(String email) throws SQLException{
 		List<EmailDTO> inboxEmailList = new ArrayList<>();
-		EmailDTO newEmail = new EmailDTO();
 		
 		String sql = "SELECT * FROM sent_emails WHERE email_to = ?";
 		PreparedStatement preStmt = connection.prepareStatement(sql);
@@ -67,9 +66,12 @@ public class EmailService {
 		
 		ResultSet rs = preStmt.executeQuery();
 		while(rs.next()) {
-			newEmail.setEmailTo(rs.getString("email_from"));
-			newEmail.setEmailSubject(rs.getString("subject"));
-			newEmail.setEmailMessage(rs.getString("message"));
+			EmailDTO newEmail = new EmailDTO();
+			
+			newEmail.setEmailTo(rs.getString(2));
+			newEmail.setEmailSubject(rs.getString(3));
+			newEmail.setEmailMessage(rs.getString(4));
+			newEmail.setEmailFrom(rs.getString(5));
 			
 			inboxEmailList.add(newEmail);
 		}
@@ -96,5 +98,49 @@ public class EmailService {
 		}
 		
 		return rowCount;
+	}
+	
+	public static List<EmailDTO> getListOfDraftsEmails(String email) throws SQLException{
+		List<EmailDTO> draftsEmailList = new ArrayList<>();
+		
+		String sql = "SELECT * FROM drafts WHERE email_from = ?";
+		PreparedStatement preStmt = connection.prepareStatement(sql);
+		preStmt.setString(1, email);
+		
+		ResultSet rs = preStmt.executeQuery();
+		while(rs.next()) {
+			EmailDTO newEmail = new EmailDTO();
+			
+			newEmail.setEmailTo(rs.getString("email_to"));
+			newEmail.setEmailFrom(rs.getString("email_from"));
+			newEmail.setEmailSubject(rs.getString("subject"));
+			newEmail.setEmailMessage(rs.getString("message"));
+			
+			draftsEmailList.add(newEmail);
+		}
+		
+		return draftsEmailList;
+	}
+	
+	public static List<EmailDTO> getListOfSentEmails(String email) throws SQLException{
+		List<EmailDTO> sentEmailList = new ArrayList<>();
+		
+		String sql = "SELECT * FROM sent_emails WHERE email_from = ?";
+		PreparedStatement preStmt = connection.prepareStatement(sql);
+		preStmt.setString(1, email);
+		
+		ResultSet rs = preStmt.executeQuery();
+		while(rs.next()) {
+			EmailDTO newEmail = new EmailDTO();
+			
+			newEmail.setEmailTo(rs.getString("email_to"));
+			newEmail.setEmailSubject(rs.getString("subject"));
+			newEmail.setEmailMessage(rs.getString("message"));
+			newEmail.setEmailFrom(rs.getString("email_from"));
+			
+			sentEmailList.add(newEmail);
+		}
+		
+		return sentEmailList;
 	}
 }
