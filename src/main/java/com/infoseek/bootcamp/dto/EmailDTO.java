@@ -1,11 +1,18 @@
 package com.infoseek.bootcamp.dto;
 
 public class EmailDTO {
+	private int emailId;
 	private String emailTo;
 	private String emailSubject;
 	private String emailMessage;
 	private String emailFrom;
 	
+	public int getEmailId() {
+		return emailId;
+	}
+	public void setEmailId(int emailId) {
+		this.emailId = emailId;
+	}
 	public String getEmailFrom() {
 		return emailFrom;
 	}

@@ -60,7 +60,7 @@ public class EmailService {
 	public static List<EmailDTO> getListOfEmails(String email) throws SQLException{
 		List<EmailDTO> inboxEmailList = new ArrayList<>();
 		
-		String sql = "SELECT * FROM sent_emails WHERE email_to = ?";
+		String sql = "SELECT * FROM sent_emails WHERE email_to = ? AND id NOT IN (SELECT email_id FROM trash)";
 		PreparedStatement preStmt = connection.prepareStatement(sql);
 		preStmt.setString(1, email);
 		
@@ -68,6 +68,7 @@ public class EmailService {
 		while(rs.next()) {
 			EmailDTO newEmail = new EmailDTO();
 			
+			newEmail.setEmailId(rs.getInt(1));
 			newEmail.setEmailTo(rs.getString(2));
 			newEmail.setEmailSubject(rs.getString(3));
 			newEmail.setEmailMessage(rs.getString(4));
@@ -128,6 +129,78 @@ public class EmailService {
 		String sql = "SELECT * FROM sent_emails WHERE email_from = ?";
 		PreparedStatement preStmt = connection.prepareStatement(sql);
 		preStmt.setString(1, email);
+		
+		ResultSet rs = preStmt.executeQuery();
+		while(rs.next()) {
+			EmailDTO newEmail = new EmailDTO();
+			
+			newEmail.setEmailTo(rs.getString("email_to"));
+			newEmail.setEmailSubject(rs.getString("subject"));
+			newEmail.setEmailMessage(rs.getString("message"));
+			newEmail.setEmailFrom(rs.getString("email_from"));
+			
+			sentEmailList.add(newEmail);
+		}
+		
+		return sentEmailList;
+	}
+	
+	private static List<EmailDTO> getEmailById(int emailId){
+		List<EmailDTO> selectedEmail = new ArrayList<>();
+		
+		try {
+			String sql = "SELECT * FROM sent_emails WHERE id = ?";
+			PreparedStatement preStmt = connection.prepareStatement(sql);
+			preStmt.setInt(1, emailId);
+			
+			ResultSet rs = preStmt.executeQuery();
+			while(rs.next()) {
+				EmailDTO newEmail = new EmailDTO();
+				
+				newEmail.setEmailTo(rs.getString(2));
+				newEmail.setEmailSubject(rs.getString(3));
+				newEmail.setEmailMessage(rs.getString(4));
+				newEmail.setEmailFrom(rs.getString(5));
+				
+				selectedEmail.add(newEmail);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return selectedEmail;
+	}
+	
+	public static int moveEmailToTrash(int emailId) {
+		int rowCount = 0;
+		List<EmailDTO> getSelectedEmail = EmailService.getEmailById(emailId);
+		
+		try {
+			String sql = "INSERT INTO trash (email_id) VALUES (?)";
+			PreparedStatement preStmt = connection.prepareStatement(sql);
+			
+			getSelectedEmail.forEach(eachEmail -> {
+				try {
+					preStmt.setInt(1, emailId);
+					
+					preStmt.executeUpdate();
+					
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			});
+		}catch(Exception e) {
+			rowCount = 1;
+		}
+		
+		return rowCount;
+	}
+	
+	public static List<EmailDTO> getListofTrashEmails(String email) throws SQLException{
+		List<EmailDTO> sentEmailList = new ArrayList<>();
+		
+		String sql = "SELECT s.email_to,s.subject,s.message,s.email_from FROM trash t INNER JOIN sent_emails s ON t.email_id = s.id";
+		PreparedStatement preStmt = connection.prepareStatement(sql);
 		
 		ResultSet rs = preStmt.executeQuery();
 		while(rs.next()) {

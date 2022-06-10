@@ -47,7 +47,35 @@
 		<div id="content" class="p-4 p-md-5 pt-5">
 			<h2 class="mb-4">Trash</h2>
 			<div style="padding: 1rem 0;">
-				
+				<table class="table ">
+	   				<tr>
+	   					<th>#</th>
+	   					<th>To</th>
+	   					<th>Subject</th>
+	   					<th>Message</th>
+	   					<th>Actions</th>
+	   				</tr>
+	   				<%
+	   					List<EmailDTO> draftsEmails = EmailService.getListofTrashEmails(session.getAttribute("user").toString());
+	   					
+	   					for(int eachEmail = 0; eachEmail < draftsEmails.size(); eachEmail++){
+	   						try{
+	   							out.print("<tr>"
+	   									+ "<td>" + eachEmail + "</td>"
+										+ "<td>" + draftsEmails.get(eachEmail).getEmailFrom() + "</td>"
+										+ "<td>" + draftsEmails.get(eachEmail).getEmailSubject() + "</td>"
+										+ "<td>" + draftsEmails.get(eachEmail).getEmailMessage() + "</td>"
+									);
+	   							
+	   							out.println("<td><button class=btn><i class='fa fa-trash'></i></button>" + 
+	   											"<button class=btn><i class='fa fa-undo'></i></button></td>");
+	   							
+	   						}catch(Exception e){
+	   							out.print("alert(" + e.getMessage() + ");");
+	   						}
+	   					}
+	   				%>
+	   			</table>
 	   		</div>
 		</div>
 	</div>

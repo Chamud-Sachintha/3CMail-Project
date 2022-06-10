@@ -67,12 +67,16 @@
 					%>
 				        <tr>
 				        	<td><%= i %></td>
-				            <td><%= currentEmails.get(i).getEmailTo() %></td>
+				            <td><%= currentEmails.get(i).getEmailFrom() %></td>
 				            <td><%= currentEmails.get(i).getEmailSubject() %></td>
 				            <td><%= currentEmails.get(i).getEmailMessage() %></td>
 				            <td>
-				            	<button class=btn><i class='fa fa-trash'></i></button>
-				            	<button class=btn><i class='fa fa-eye'></i></button>
+				            	<form action="MoveToTrash" method="post">
+				            		<input type="hidden" value=<%= currentEmails.get(i).getEmailId() %> name="emailId">
+				            		
+				            		<button type="submit" class=btn><i class='fa fa-trash'></i></button>
+				            		<button class=btn><i class='fa fa-eye'></i></button>
+				            	</form>
 				            </td>
 				        </tr>
 				    <%
