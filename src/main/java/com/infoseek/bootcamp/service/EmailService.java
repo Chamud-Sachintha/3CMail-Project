@@ -145,7 +145,7 @@ public class EmailService {
 		return sentEmailList;
 	}
 	
-	private static List<EmailDTO> getEmailById(int emailId){
+	public static List<EmailDTO> getEmailById(int emailId){
 		List<EmailDTO> selectedEmail = new ArrayList<>();
 		
 		try {
@@ -199,8 +199,9 @@ public class EmailService {
 	public static List<EmailDTO> getListofTrashEmails(String email) throws SQLException{
 		List<EmailDTO> sentEmailList = new ArrayList<>();
 		
-		String sql = "SELECT s.email_to,s.subject,s.message,s.email_from FROM trash t INNER JOIN sent_emails s ON t.email_id = s.id";
+		String sql = "SELECT s.email_to,s.subject,s.message,s.email_from FROM trash t INNER JOIN sent_emails s ON t.email_id = s.id WHERE email_to = ?";
 		PreparedStatement preStmt = connection.prepareStatement(sql);
+		preStmt.setString(1, email);
 		
 		ResultSet rs = preStmt.executeQuery();
 		while(rs.next()) {

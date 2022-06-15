@@ -50,39 +50,28 @@
 				}
 			%>
 		
-			<h2 class="mb-4">Inbox</h2>
+			<h2 class="mb-4">View E-mail</h2>
 			<div style="padding: 1rem 0;">
-    			<table class="table ">
+    			<table class="table primary">
     				<tr>
-    					<th>#</th>
-    					<th>From</th>
-    					<th>Subject</th>
-    					<th>Message</th>
-    					<th>Actions</th>
+    					<td>To &nbsp;&nbsp;-</td>
+    					<td><% out.print(request.getParameter("emailTo")); %></td>
+    					<td>X</td>
+    					<td>X</td>
     				</tr>
-    				
-				    <%
-					    List<EmailDTO> currentEmails = EmailService.getListOfEmails(session.getAttribute("user").toString()); 
-					    for(int i=0; i<currentEmails.size(); i++){
-					%>
-				        <tr>
-				        	<td><%= i %></td>
-				            <td><%= currentEmails.get(i).getEmailFrom() %></td>
-				            <td><%= currentEmails.get(i).getEmailSubject() %></td>
-				            <td><%= currentEmails.get(i).getEmailMessage() %></td>
-				            <td>
-				            	<form action="MoveToTrash" method="post">
-				            		<input type="hidden" value=<%= currentEmails.get(i).getEmailId() %> name="emailId">
-				            		
-				            		<button type="submit" class=btn><i class='fa fa-trash'></i></button>
-				            		<button type="submit" name="action" value="viewMail" onclick="form.action='ViewMail';" class=btn><i class='fa fa-eye'></i></button>
-				            	</form>
-				            </td>
-				        </tr>
-				    <%
-				    	}
-				    %>
-    				
+    				<tr>
+    					<td>From &nbsp;&nbsp;-</td>
+    					<td colspan=3><% out.print(request.getParameter("emailTo")); %></td>
+    				</tr>
+    				<tr>
+    					<td>Subject &nbsp;&nbsp; - </td>
+    					<td colspan=3><% out.print(request.getParameter("subject")); %></td>
+    				</tr>
+    				<tr>
+    					<td colspan=4 height=200>Message<br>
+    						<textarea rows="10" cols="130" disabled="disabled" value='<%out.print(request.getParameter("message")); %>' ></textarea>
+    					 </td>
+    				</tr>
     			</table>
     		</div>
     	</div>

@@ -39,9 +39,16 @@
 	            <div class="col-md-8">
 	            	<%
 	            		if(request.getAttribute("status") != null){
-	            			out.print("<h1>" + request.getAttribute("status") + "</h1>");
-	            		}
 	            	%>
+		         		<!-- status model starts here -->
+						<div class="alert alert-danger" role="alert">
+						  <a href="#" class="close" data-dismiss="alert" aria-label="close">X</a>
+						  	<% out.print(request.getAttribute("status")); %>
+						</div>
+						<!-- status model ends here -->
+					<%
+	            		}
+					%>
 	              <div class="mb-4">
 	              <a href="index.jsp">Go Back To the Home Page</a>
 	              <h3>Sign In</h3>
