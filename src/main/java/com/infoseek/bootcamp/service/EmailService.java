@@ -112,6 +112,7 @@ public class EmailService {
 		while(rs.next()) {
 			EmailDTO newEmail = new EmailDTO();
 			
+			newEmail.setEmailId(Integer.parseInt(rs.getString("id")));
 			newEmail.setEmailTo(rs.getString("email_to"));
 			newEmail.setEmailFrom(rs.getString("email_from"));
 			newEmail.setEmailSubject(rs.getString("subject"));
@@ -199,7 +200,7 @@ public class EmailService {
 	public static List<EmailDTO> getListofTrashEmails(String email) throws SQLException{
 		List<EmailDTO> sentEmailList = new ArrayList<>();
 		
-		String sql = "SELECT s.email_to,s.subject,s.message,s.email_from FROM trash t INNER JOIN sent_emails s ON t.email_id = s.id WHERE email_to = ?";
+		String sql = "SELECT t.email_id,s.email_to,s.subject,s.message,s.email_from FROM trash t INNER JOIN sent_emails s ON t.email_id = s.id WHERE email_to = ?";
 		PreparedStatement preStmt = connection.prepareStatement(sql);
 		preStmt.setString(1, email);
 		
@@ -207,6 +208,7 @@ public class EmailService {
 		while(rs.next()) {
 			EmailDTO newEmail = new EmailDTO();
 			
+			newEmail.setEmailId(Integer.parseInt(rs.getString("email_id")));
 			newEmail.setEmailTo(rs.getString("email_to"));
 			newEmail.setEmailSubject(rs.getString("subject"));
 			newEmail.setEmailMessage(rs.getString("message"));
@@ -215,6 +217,37 @@ public class EmailService {
 			sentEmailList.add(newEmail);
 		}
 		
+		
 		return sentEmailList;
+	}
+	
+	public static int moveEmailPermenant(int emailId) {
+		int rowCount = 0;
+		List<EmailDTO> getSelectedEmail = EmailService.getEmailById(emailId);
+		
+		try {
+			String sql = "DELETE FROM trash WHERE email_id = ?";
+			String permSql = "DELETE FROM sent_emails WHERE id = ?";
+			
+			PreparedStatement preStmt = connection.prepareStatement(sql);
+			PreparedStatement preStmTPerm = connection.prepareStatement(permSql);
+			
+			getSelectedEmail.forEach(eachEmail -> {
+				try {
+					preStmt.setInt(1, emailId);
+					preStmTPerm.setInt(1, emailId);
+					
+					preStmt.executeUpdate();
+					preStmTPerm.executeUpdate();
+					
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			});
+		}catch(Exception e) {
+			rowCount = 1;
+		}
+		
+		return rowCount;
 	}
 }

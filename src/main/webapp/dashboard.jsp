@@ -3,7 +3,8 @@
 		request.setAttribute("status", "Please Login Before Access the Dashboard.");
 		RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
 		rd.include(request, response);
-	}
+	}else{
+		
 %>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -67,3 +68,6 @@
     <script src="compose/js/main.js"></script>
 </body>
 </html>
+<%
+	}
+%>

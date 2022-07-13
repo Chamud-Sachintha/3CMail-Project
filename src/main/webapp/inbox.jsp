@@ -69,7 +69,7 @@
 				        	<td><%= i %></td>
 				            <td><%= currentEmails.get(i).getEmailFrom() %></td>
 				            <td><%= currentEmails.get(i).getEmailSubject() %></td>
-				            <td><%= currentEmails.get(i).getEmailMessage() %></td>
+				            <td><%= currentEmails.get(i).getEmailMessage().substring(0, 30) + " ..." %></td>
 				            <td>
 				            	<form action="MoveToTrash" method="post">
 				            		<input type="hidden" value=<%= currentEmails.get(i).getEmailId() %> name="emailId">

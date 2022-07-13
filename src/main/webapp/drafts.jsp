@@ -56,25 +56,26 @@
 	   					<th>Actions</th>
 	   				</tr>
 	   				<%
-	   					List<EmailDTO> draftsEmails = EmailService.getListOfDraftsEmails(session.getAttribute("user").toString());
-	   					
-	   					for(int eachEmail = 0; eachEmail < draftsEmails.size(); eachEmail++){
-	   						try{
-	   							out.print("<tr>"
-	   									+ "<td>" + eachEmail + "</td>"
-										+ "<td>" + draftsEmails.get(eachEmail).getEmailTo() + "</td>"
-										+ "<td>" + draftsEmails.get(eachEmail).getEmailSubject() + "</td>"
-										+ "<td>" + draftsEmails.get(eachEmail).getEmailMessage() + "</td>"
-									);
-	   							
-	   							out.println("<td><button class=btn><i class='fa fa-trash'></i></button>" + 
-	   											"<button class=btn><i class='fa fa-eye'></i></button></td>");
-	   							
-	   						}catch(Exception e){
-	   							out.print("alert(" + e.getMessage() + ");");
-	   						}
-	   					}
-	   				%>
+					    List<EmailDTO> draftsEmails = EmailService.getListOfDraftsEmails(session.getAttribute("user").toString()); 
+					    for(int i=0; i<draftsEmails.size(); i++){
+					%>
+						<tr>
+				        	<td><%= i %></td>
+				            <td><%= draftsEmails.get(i).getEmailTo() %></td>
+				            <td><%= draftsEmails.get(i).getEmailSubject() %></td>
+				            <td><%= draftsEmails.get(i).getEmailMessage() %></td>
+				            <td>
+				            	<form action="MoveToTrash" method="post">
+				            		<input type="hidden" value=<%= draftsEmails.get(i).getEmailId() %> name="emailId">
+				            		
+				            		<button type="submit" class=btn><i class='fa fa-trash'></i></button>
+				            		<button type="submit" name="action" value="viewMail" onclick="form.action='ViewMail';" class=btn><i class='fa fa-eye'></i></button>
+				            	</form>
+				            </td>
+				        </tr>
+	   				<%
+				    	}
+				    %>
 	   			</table>
 	   		</div>
 		</div>

@@ -56,20 +56,25 @@
     				<tr>
     					<td>To &nbsp;&nbsp;-</td>
     					<td><% out.print(request.getParameter("emailTo")); %></td>
-    					<td>X</td>
-    					<td>X</td>
+    					<td style="float: right">
+    						<!--  <button type="submit" class="btn btn-sm"><i class='fa fa-reply'></i></button>
+    						<button type="submit" class="btn btn-sm"><i class='fa fa-share'></i></button>-->
+    						<form action="MoveToTrash" method="post">
+    							<button type="submit" value="moveToTrash" class="btn btn-sm"><i class='fa fa-trash'></i></button>
+    						</form>
+    					</td>
     				</tr>
     				<tr>
     					<td>From &nbsp;&nbsp;-</td>
-    					<td colspan=3><% out.print(request.getParameter("emailTo")); %></td>
+    					<td colspan=3><% out.print(request.getParameter("emailFrom")); %></td>
     				</tr>
     				<tr>
     					<td>Subject &nbsp;&nbsp; - </td>
     					<td colspan=3><% out.print(request.getParameter("subject")); %></td>
     				</tr>
     				<tr>
-    					<td colspan=4 height=200>Message<br>
-    						<textarea rows="10" cols="130" disabled="disabled" value='<%out.print(request.getParameter("message")); %>' ></textarea>
+    					<td colspan=3 height=200>Message<br><br>
+    						<textarea rows="10" cols="130" disabled="disabled"><%out.print(request.getParameter("message")); %></textarea>
     					 </td>
     				</tr>
     			</table>
